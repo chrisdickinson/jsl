@@ -1,0 +1,34 @@
+{
+  "name": "jsl",
+  "version": "0.0.0",
+  "description": "a modular js linter",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "bin": {
+    "jsl": "./bin/jsl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrisdickinson/jsl.git"
+  },
+  "keywords": [
+    "lint",
+    "linter",
+    "code quality"
+  ],
+  "author": "Chris Dickinson <chris@neversaw.us>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisdickinson/jsl/issues"
+  },
+  "dependencies": {
+    "cssauron-falafel": "0.0.2",
+    "falafel": "~0.2.1",
+    "concat-stream": "~1.0.0",
+    "duplexer": "~0.1.1",
+    "through": "~2.3.4",
+    "line-stream": "0.0.3"
+  }
+}
