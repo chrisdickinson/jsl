@@ -7,7 +7,6 @@ var find_tab_depth = require('../utils/find-tab-depth')
 function comma_first_call(node, errors, warnings) {
   var nodes = node.arguments.slice()
     , sub = subsource(node)
-    , base = node.range[0]
     , last_node
     , cur_node
     , str

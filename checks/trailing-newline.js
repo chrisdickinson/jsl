@@ -3,10 +3,16 @@ module.exports = check_trailing_newline
 var subsource = require('../utils/source')
 
 function check_trailing_newline(node, errors, warnings, source) {
-  var body = Array.isArray(node.parent.body) ? node.parent.body : node.parent.body.body
-    , idx = body.indexOf(node)
+  var body = Array.isArray(node.parent.body) ? node.parent.body : (node.parent.body || {}).body
     , parent_src
     , prev
+    , idx
+
+  if(!body) {
+    return
+  }
+
+  idx = body.indexOf(node)
 
   if(idx < 0) {
     return

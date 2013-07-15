@@ -10,6 +10,8 @@ module.exports = function(node) {
     while(bits.length) {
       ch = bits.shift()
       if(ch === '/' && last === '/') {
+        out.pop()
+
         while(bits.length && bits.shift() !== '\n') {
           // noop
         }

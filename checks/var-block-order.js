@@ -17,6 +17,11 @@ function var_block_order(node, errors, warnings, src) {
   }
 
   for(var i = 0, len = decl.length; i < len; ++i) {
+    // skip this check for `self`/`proto` decls.
+    if(decl[i].id.name === 'proto' || decl[i].id.name === 'self') {
+      continue
+    }
+
     if(!decl[i].init && assign) {
       assign = false
       length = Infinity

@@ -2,10 +2,11 @@ module.exports = comma_first_object
 
 var find_tab_depth = require('../utils/find-tab-depth')
   , make_tabs = require('../utils/make-tabs')
+  , subsource = require('../utils/source')
 
 function comma_first_object(node, errors, warnings) {
   var nodes = node.properties.slice()
-    , base = node.range[0]
+    , sub = subsource(node)
     , last_node
     , cur_node
     , str
@@ -35,19 +36,18 @@ function comma_first_object(node, errors, warnings) {
   last_node = node
 
   while(cur_node = nodes.shift()) {
-    str = node.src.slice(
-        is_first ? last_node.range[0] - base : last_node.range[1] - base
-      , cur_node.range[0] - base
+    str = sub(
+        is_first ? last_node.range[0] : last_node.range[1]
+      , cur_node.range[0]
     )
 
     if(is_first) {
-      rex = new RegExp('^\\{\\s*\n\\s{'+(2 * depth + 4) +'}$')
+      rex = new RegExp('^\\{\\s*\n\\s{'+(2 * depth + 2) +'}$')
 
       if(!rex.test(str)) {
-        if(false)
         errors.push({
             line: cur_node.start.line
-          , message: 'expected `'+tabs+'    `, got `'+str+'`'
+          , message: 'expected `{\\n'+make_tabs(depth + 1)+'    `, got `'+JSON.stringify(str).slice(1,-1)+'`'
         })
       }
 
@@ -55,7 +55,7 @@ function comma_first_object(node, errors, warnings) {
     } else if(!rex.test(str)) {
       errors.push({
           line: cur_node.start.line
-        , message: 'expected `'+JSON.stringify(tabs).slice(1, -1)+' , `, got `'+JSON.stringify(str).slice(1, -1)+'`'
+        , message: 'expected `'+JSON.stringify('\n'+tabs).slice(1, -1)+', `, got `'+JSON.stringify(str).slice(1, -1)+'`'
       })
     }
 

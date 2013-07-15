@@ -87,7 +87,7 @@ function consume(files, baton, ready) {
     ++baton.errors
     process.stderr.write(
       stream.filename.replace(process.cwd(), '.') +
-      ' Parse Error:'+ err.message + '\n'
+      ' Parse Error:'+ err.stack + '\n'
     )
     consume(files, baton, ready)
   }

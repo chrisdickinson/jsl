@@ -21,11 +21,32 @@ var maybe_trailing_newline = require('./checks/maybe-trailing-newline')
   , block_format = require('./checks/block-format')
   , no_semicolons = require('./checks/semicolons') 
 
+var nl_types = [
+  'variable-decl'
+, 'if'
+, 'for'
+, 'for-in'
+, 'try'
+, 'while'
+, 'do-while'
+, '[type=FunctionDeclaration]'
+]
+
+var stmt_types = [
+  'if'
+, 'for'
+, 'for-in'
+, 'catch'
+, 'while'
+, 'do-while'
+, 'try'
+]
+
 var checks = [
   '[type=VariableDeclaration]',               var_block_order
 , '[type=VariableDeclaration]',               too_many_keys.check
 , 'variable > id ~ object > key + key + key', too_many_keys.flag
-, 'object > key function',                    fail_nested_function
+, 'object > * > function',                    fail_nested_function
 , 'for > * + * + update',                     use_preincrement
 , 'call',                                     comma_first_call
 , 'object',                                   comma_first_object
@@ -36,23 +57,10 @@ var checks = [
 
 // trailing newline
 , 'expr + *',                                 maybe_trailing_newline
-, 'variable-decl + *',                        trailing_newline
-, 'if + *',                                   trailing_newline
-, 'for + *',                                  trailing_newline
-, 'for-in + *',                               trailing_newline
-, 'try + *',                                  trailing_newline
-, 'while + *',                                trailing_newline
-, 'do-while + *',                             trailing_newline
-, '[type=FunctionDeclaration] + *',           trailing_newline
+, ':any('+nl_types+') + *',                   trailing_newline
 
 // if() {, et al
-, 'if',                                       statement_style
-, 'for',                                      statement_style
-, 'for-in',                                   statement_style
-, 'catch',                                    statement_style
-, 'while',                                    statement_style
-, 'do-while',                                 statement_style
-, 'try',                                      statement_style
+, ''+stmt_types,                              statement_style
 
 , 'function',                                 function_style
 
