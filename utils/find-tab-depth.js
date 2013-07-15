@@ -3,32 +3,16 @@ module.exports = find_tab_depth
 var language = require('cssauron-falafel')
 
 function find_tab_depth(node) {
-  var isternary = language('ternary')
-    , isswitch = language('switch')
+  var any = language('ternary, switch, object, block, array, case')
     , isobject = language('object')
-    , isblock = language('block')
-    , isarray = language('array')
-    , iscase = language('case')
+    , isvar = language('variable')
     , object_count = 0
     , current = node
     , depth = -1
     , any
 
-  any = [
-      isternary
-    , isblock
-    , isobject
-    , isarray
-    , isswitch
-    , iscase
-  ]
-
-  any = [].some.bind(any, function(check) {
-    return check(current)
-  })
-
   while(current) {
-    if(any()) {
+    if(any(current)) {
       ++depth
     }
 
@@ -40,6 +24,9 @@ function find_tab_depth(node) {
       }
     }
 
+    if(isvar(current) && current.parent.declarations.length > 1) {
+      ++depth
+    }
     current = current.parent
   }
 

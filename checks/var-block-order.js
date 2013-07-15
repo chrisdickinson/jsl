@@ -4,6 +4,7 @@ function var_block_order(node, errors, warnings, src) {
   var decl = node.declarations
     , allow_transition = true
     , length = Infinity
+    , line_len
     , assign
 
   assign = decl[0] && !!decl[0].init
@@ -32,14 +33,18 @@ function var_block_order(node, errors, warnings, src) {
       }) 
     }
 
-    if(decl[i].src.length > length) {
+    line_len = Math.max.apply(null, decl[i].src.split('\n').map(function(x) {
+      return x.length
+    }))
+
+    if(line_len > length) {
       errors.push({
           line: decl[i].start.line
         , message: 'variable declarations should be in order of assign, no assign; then line length'
       })
     }
 
-    length = decl[i].src.length
+    length = line_len
   } 
 }
 

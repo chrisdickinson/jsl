@@ -11,7 +11,7 @@ function comma_first_object(node, errors, warnings) {
     , cur_node
     , str
 
-  if(node.properties.length === 0) {
+  if(nodes.length === 0) {
     if(node.src !== '{}') {
       errors.push({
           line: node.start.line
@@ -22,7 +22,7 @@ function comma_first_object(node, errors, warnings) {
     return
   } 
 
-  if(node.properties[node.properties.length - 1].start.line === node.start.line) {
+  if(nodes[nodes.length - 1].start.line === node.start.line) {
     return
   }
 
@@ -62,8 +62,4 @@ function comma_first_object(node, errors, warnings) {
     last_node = cur_node
     is_first = false
   } 
-
-
 }
-
-
