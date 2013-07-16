@@ -4,7 +4,7 @@ var language = require('cssauron-falafel')
 
 function find_tab_depth(node) {
   var any = language('ternary, switch, object, block, array, case')
-    , isobject = language('object')
+    , isobject = language('object, array')
     , isvar = language('variable')
     , object_count = 0
     , current = node

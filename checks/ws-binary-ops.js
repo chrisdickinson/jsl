@@ -20,8 +20,13 @@ function whitespace(node, errors, warnings) {
     return
   }
 
+  if(/\s*\n/.test(src.slice(1 + node.parent.operator.length))) {
+    return
+  }
+
   errors.push({
       line: node.start.line
-    , message: 'binary operations should be surrounded by a single whitespace'
+    , message: 'binary operations should be surrounded ' +
+               'by a single whitespace, got ' + JSON.stringify(src)
   })
 } 
