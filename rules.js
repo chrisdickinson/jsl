@@ -20,7 +20,9 @@ var maybe_trailing_newline = require('./checks/maybe-trailing-newline')
   , object_key_fmt = require('./checks/object-key-format')
   , statement_style = require('./checks/statement-style')
   , var_block_order = require('./checks/var-block-order')
+  , if_return_early = require('./checks/if-return-early')
   , function_style = require('./checks/function-style')
+  , if_stmt_order = require('./checks/if-stmt-order')
   , binary_op_ws = require('./checks/ws-binary-ops')
   , block_format = require('./checks/block-format')
   , no_semicolons = require('./checks/semicolons') 
@@ -56,6 +58,15 @@ var checks = [
   , ['object > * > object',                      warn_nested_object]
   , ['object > *',                               object_key_fmt]
   , ['for > * + * + update',                     use_preincrement]
+  , [
+        'if[alternate] > *:first-child + block > :any(continue, break, return)'
+      , if_return_early
+    ]
+  , ['if[alternate]:first-child:last-child',     if_return_early]
+  , [
+        'if[alternate] > * + block + block > *:last-child'
+      , if_stmt_order
+    ]
   , ['call',                                     comma_first_call]
   , ['object',                                   comma_first_object]
   , ['array',                                    comma_first_array]
@@ -72,7 +83,11 @@ var checks = [
 ]
 
 checks = checks.map(function(item) {
-  return [language(item[0]), item[1]]
+  var selector = language(item[0])
+
+  selector.name = item[0]
+
+  return [selector, item[1]]
 })
 
 function lint(name) {
