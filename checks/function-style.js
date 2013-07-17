@@ -18,8 +18,9 @@ function function_style(node, subsource, alert) {
     if(child.type === 'Identifier') {
       if(varnames[child.name]) {
         alert(
-          child.start.line
-        , 'saw `'+child.name+'` multiple times!' 
+          child
+        , 'saw %r multiple times!'
+        , child.name 
         )
       }
       varnames[child.name] = true
@@ -32,8 +33,10 @@ function function_style(node, subsource, alert) {
 
   if(!valid) {
     alert(
-        node.start.line
-      , 'expected `'+string+'`, got `'+JSON.stringify(result)+'`'
+        node
+      , 'expected %r, got %r`'
+      , string
+      , result
     )
   }
 
@@ -41,8 +44,10 @@ function function_style(node, subsource, alert) {
 
   if(result !== ') {') {
     alert(
-        node.start.line
-      , 'expected `'+string+'`, got `'+JSON.stringify(result)+'`'
+        node
+      , 'expected %r, got %r`'
+      , string
+      , result
     )
   }
 }
