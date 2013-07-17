@@ -38,8 +38,8 @@ function block_format(node, subsource, alert) {
     if(depth !== (stmt.start.col - 1) / 2) {
       alert(
           stmt
-        ,  'expected indent of %d (%d spaces), found ' +
-           'statement preceded by %d spaces instead.'
+        , 'expected indent of %d (%d spaces), found ' +
+          'statement preceded by %d spaces instead.'
         , depth
         , depth * 2
         , stmt.start.col - 1
@@ -64,7 +64,7 @@ function block_format(node, subsource, alert) {
     ++cnt  
   }
 
-  if(!result.length || cnt !== (depth - 1)<<1) {
+  if(!result.length || cnt !== (depth - 1) << 1) {
     if(cnt === depth && cnt === 0) {
       return
     }
