@@ -1,8 +1,8 @@
 module.exports = whitespace
 
-var subsource = require('../utils/source')
+whitespace.selector = 'unary > *'
 
-function whitespace(node, errors, warnings) {
+function whitespace(node, subsource, alert) {
   var sub = subsource(node.parent)
     , op = node.parent.operator
     , src
@@ -29,9 +29,10 @@ function whitespace(node, errors, warnings) {
     return
   }
 
-  errors.push({
-    line: node.start.line
-  , message: 'expected `' + JSON.stringify(op).slice(1, -1) + '`, got `' + 
-             JSON.stringify(src).slice(1, -1) + '`'
-  })
+  alert(
+      node
+    , 'expected %r, got %r' 
+    , op
+    , src
+  )
 } 

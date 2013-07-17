@@ -2,9 +2,10 @@ module.exports = comma_first_call
 
 var find_tab_depth = require('../utils/find-tab-depth')
   , make_tabs = require('../utils/make-tabs')
-  , subsource = require('../utils/source')
 
-function comma_first_call(node, errors, warnings) {
+comma_first_call.selector = 'call'
+
+function comma_first_call(node, subsource, alert) {
   var nodes = node.arguments.slice()
     , sub = subsource(node)
     , last_node
@@ -12,18 +13,18 @@ function comma_first_call(node, errors, warnings) {
     , str
 
   if(sub(node.callee.range[1], node.callee.range[1] + 1) !== '(') {
-    errors.push({
-        line: node.start.line
-      , message: 'no space between invocation and call'
-    })
+    alert(
+        node
+      , 'no space between invocation and call'
+    )
   }
 
   if(node.arguments.length === 0) {
     if(node.src.slice(-2) !== '()') {
-      errors.push({
-          line: node.start.line
-        , message: 'empty calls should be written `()`'
-      })
+      alert(
+          node
+        , 'empty calls should be written `()`'
+      )
     }
 
     return
@@ -54,18 +55,22 @@ function comma_first_call(node, errors, warnings) {
       rex = new RegExp('^\\(\\s*\n\\s{'+(2 * depth + 4) +'}$')
 
       if(!rex.test(str)) {
-        errors.push({
-            line: cur_node.start.line
-          , message: 'expected `'+tabs+'    `, got `'+str+'`'
-        })
+        alert(
+            cur_node
+          , 'expected %r, got %r'
+          , tabs
+          , str
+        )
       }
 
       rex = new RegExp('^\\s*\\n\\s{'+(2 * depth + 2) +'}, $')
     } else if(!rex.test(str)) {
-      errors.push({
-          line: cur_node.start.line
-        , message: 'expected `'+JSON.stringify(tabs).slice(1, -1)+' , `, got `'+JSON.stringify(str).slice(1, -1)+'`'
-      })
+      alert(
+          cur_node
+        , 'expected %r, got %r'
+        , tabs
+        , str
+      )
     }
 
     last_node = cur_node

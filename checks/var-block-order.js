@@ -1,6 +1,8 @@
 module.exports = var_block_order
 
-function var_block_order(node, errors, warnings, src) {
+var_block_order.selector = '[type=VariableDeclaration]'
+
+function var_block_order(node, subsource, alert) {
   var decl = node.declarations
     , allow_transition = true
     , length = Infinity
@@ -27,10 +29,7 @@ function var_block_order(node, errors, warnings, src) {
       assign = false
       length = Infinity
     } else if(decl[i].init && !assign) {
-      errors.push({
-        line: decl[i].start.line
-      , message: 'should not transition from no-assign to assign in var block'
-      }) 
+      alert(decl[i], 'should not transition from no-assign to assign in var block')
     }
 
     line_len = Math.max.apply(null, decl[i].src.split('\n').map(function(x) {
@@ -38,10 +37,10 @@ function var_block_order(node, errors, warnings, src) {
     }))
 
     if(line_len > length) {
-      errors.push({
-          line: decl[i].start.line
-        , message: 'variable declarations should be in order of assign, no assign; then line length'
-      })
+      alert(
+          decl[i]
+        , 'variable declarations should be in order of assign, no assign; then line length'
+      )
     }
 
     length = line_len

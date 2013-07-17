@@ -2,9 +2,10 @@ module.exports = comma_first_array
 
 var find_tab_depth = require('../utils/find-tab-depth')
   , make_tabs = require('../utils/make-tabs')
-  , subsource = require('../utils/source')
 
-function comma_first_array(node, errors, warnings) {
+comma_first_array.selector = 'array'
+
+function comma_first_array(node, subsource, alert) {
   var nodes = node.elements.slice()
     , sub = subsource(node)
     , last_node
@@ -13,10 +14,10 @@ function comma_first_array(node, errors, warnings) {
 
   if(nodes.length === 0) {
     if(node.src !== '[]') {
-      errors.push({
-          line: node.start.line
-        , message: 'empty arrays should be written `[]`'
-      })
+      alert(
+          node
+        , 'empty arrays should be written `[]`'
+      )
     }
 
     return
@@ -45,18 +46,18 @@ function comma_first_array(node, errors, warnings) {
       rex = new RegExp('^\\[\\s*\n\\s{'+(2 * depth + 2) +'}$')
 
       if(!rex.test(str)) {
-        errors.push({
-            line: cur_node.start.line
-          , message: 'expected `[\\n'+make_tabs(depth + 1)+'    `, got `'+JSON.stringify(str).slice(1,-1)+'`'
-        })
+        alert(
+            cur_node
+          , 'expected `[\\n'+make_tabs(depth + 1)+'    `, got `'+JSON.stringify(str).slice(1,-1)+'`'
+        )
       }
 
       rex = new RegExp('^\\s*\\n\\s{'+(2 * depth) +'}, $')
     } else if(!rex.test(str)) {
-      errors.push({
-          line: cur_node.start.line
-        , message: 'expected `'+JSON.stringify('\n'+tabs).slice(1, -1)+', `, got `'+JSON.stringify(str).slice(1, -1)+'`'
-      })
+      alert(
+          cur_node
+        , 'expected `'+JSON.stringify('\n'+tabs).slice(1, -1)+', `, got `'+JSON.stringify(str).slice(1, -1)+'`'
+      )
     }
 
     last_node = cur_node

@@ -4,7 +4,8 @@ var language = require('cssauron-falafel')
 
 function find_tab_depth(node) {
   var any = language('ternary, switch, object, block, array, case')
-    , isobject = language('object, array')
+    , isspecial = language('object, array')
+    , wascall = language('call')(node)
     , isvar = language('variable')
     , object_count = 0
     , current = node
@@ -17,9 +18,9 @@ function find_tab_depth(node) {
     }
 
     // special case all the things!
-    if(isobject(current)) {
+    if(isspecial(current)) {
       ++object_count
-      if(object_count > 1) {
+      if(object_count > 1 || wascall) {
         ++depth
       }
     }

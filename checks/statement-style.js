@@ -1,7 +1,20 @@
 module.exports = check_statement_style
 
-function check_statement_style(node, errors, warnings, src) {
+var stmt_types = [
+    'if'
+  , 'for'
+  , 'for-in'
+  , 'catch'
+  , 'while'
+  , 'do-while'
+  , 'try'
+]
+
+check_statement_style.selector = ''+stmt_types
+
+function check_statement_style(node, subsource, alert) {
   var first_node = node.init || node.param || node.test
+    , src = node.src || node.source()
     , last_node
     , body
     , type
@@ -15,37 +28,37 @@ function check_statement_style(node, errors, warnings, src) {
     ch = src.slice(first_node.range[0] - node.range[0] - 2, first_node.range[0] - node.range[0])
 
     if(/\s/.test(ch)) {
-      errors.push({
-          line: node.start.line
-        , message: /\s/.test(ch[1]) ? 
+      alert(
+          node
+        , /\s/.test(ch[1]) ? 
             'no space between `(` and expression' :
             'no space between `'+type+'` and `(`'
-      })
+      )
     }
 
     if(last_node && node.type !== 'DoWhileStatement') {
       ch = src.slice(last_node.range[1] - node.range[0], last_node.range[1] - node.range[0] + 3)
 
       if(!/^\)\s{1}\{$/.test(ch)) {
-        errors.push({
-            line: node.start.line
-          , message: '`'+JSON.stringify(ch).slice(1, -1)+'` should match `) {`'
-        })
+        alert(
+            node
+          , '`'+JSON.stringify(ch).slice(1, -1)+'` should match `) {`'
+        )
       }
     }
   }
 
   if(node.type === 'IfStatement') {
     if(node.consequent.type !== 'BlockStatement') {
-      errors.push({
-        line: node.start.line
-      , message: 'if statements must always use braces'
-      })
+      alert(
+        node
+      , 'if statements must always use braces'
+      )
     } else if(node.consequent.start.line !== node.start.line) {
-      errors.push({
-        line: node.start.line
-      , message: 'open block brace belongs on same line as statement'
-      })
+      alert(
+        node
+      , 'open block brace belongs on same line as statement'
+      )
     }
 
     if(!node.alternate) {
@@ -53,17 +66,17 @@ function check_statement_style(node, errors, warnings, src) {
     }
 
     if(node.consequent.end.line !== node.alternate.start.line) {
-      errors.push({
-        line: node.start.line
-      , message: '`else if` should be on one line'
-      })
+      alert(
+        node
+      , '`else if` should be on one line'
+      )
     }
 
     if(node.alternate.type !== 'BlockStatement' && node.alternate.type !== 'IfStatement') {
-      errors.push({
-        line: node.alternate.start.line
-      , message: 'else statements must always use braces'
-      })
+      alert(
+        node.alternate
+      , 'else statements must always use braces'
+      )
     }
 
     return
@@ -73,26 +86,26 @@ function check_statement_style(node, errors, warnings, src) {
 
   if(body.type !== 'BlockStatement') {
     if(node.type !== 'ForInStatement' && body.type !== 'IfStatement') {
-      errors.push({
-        line: node.start.line
-      , message: type+' statements must always use braces'
-      })
+      alert(
+        node
+      , type+' statements must always use braces'
+      )
     }
   } else if(body.start.line !== node.start.line) {
-    errors.push({
-      line: node.start.line
-    , message: 'open block brace belongs on same line as statement'
-    })
+    alert(
+      node
+    , 'open block brace belongs on same line as statement'
+    )
   }
 
   if(node.type === 'TryStatement') {
     for(var i = 0, len = node.handlers.length; i < len; ++i) {
 
       if(src.slice(node.handlers[i].range[0] - node.range[0] - '} '.length, node.handlers[i].range[0] - node.range[0]) !== '} ') {
-        errors.push({
-            line: node.handlers[i].start.line
-          , message: '`catch` should be on the same line as `}`'
-        })
+        alert(
+            node.handlers[i]
+          , '`catch` should be on the same line as `}`'
+        )
       }
     }
 
@@ -106,10 +119,10 @@ function check_statement_style(node, errors, warnings, src) {
       return
     }
 
-    errors.push({
-        line: node.finalizer.start.line
-      , message: 'expected `} finally {`'
-    })
+    alert(
+        node.finalizer
+      , 'expected `} finally {`'
+    )
   }
 
 }

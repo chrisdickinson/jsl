@@ -1,29 +1,33 @@
 module.exports = block_format
 
 var find_depth = require('../utils/find-tab-depth')
-  , subsource = require('../utils/source')
 
-function block_format(node, errors, warnings, src) {
+block_format.selector = 'block'
+
+function block_format(node, subsource, alert) {
   var slice = subsource(node)
     , result
     , depth
     , stmt
     , cnt
+    , src
+
+  src = node.src || node.source()
 
   result = slice(node.range[0], node.range[0] + src.indexOf('\n'))
 
   if(!/^\{\s*$/.test(result)) { 
-    errors.push({
-        line: node.start.line
-      , message: 'expected `\\n` after `{`'
-    })
+    alert(
+        node
+      , 'expected `\\n` after `{`'
+    )
   }
 
   if(node.start.line === node.end.line) {
-    errors.push({
-        line: node.start.line
-      , message: 'blocks should always encompass three lines'
-    })
+    alert(
+        node
+      , 'blocks should always encompass three lines'
+    )
   }
 
   depth = find_depth(node)
@@ -32,13 +36,14 @@ function block_format(node, errors, warnings, src) {
     stmt = node.body[i]
 
     if(depth !== (stmt.start.col - 1) / 2) {
-      errors.push({
-          line: stmt.start.line
-        , message:  'expected indent of '+depth+' ('+
-                    (depth * 2)+' spaces), found stmt'+
-                    ' preceded by '+(stmt.start.col-1)+
-                    ' spaces' 
-      })
+      alert(
+          stmt
+        ,  'expected indent of %d (%d spaces), found ' +
+           'statement preceded by %d spaces instead.'
+        , depth
+        , depth * 2
+        , stmt.start.col - 1
+      )
     }
   }
 
@@ -64,9 +69,9 @@ function block_format(node, errors, warnings, src) {
       return
     }
 
-    errors.push({
-        line: node.end.line
-      , message: 'expected proper `}` dedent'
-    })
+    alert(
+        node
+      , 'expected proper `}` dedent'
+    )
   }
 }

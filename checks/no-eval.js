@@ -1,6 +1,10 @@
-module.exports = function(node, errors, warnings) {
-  errors.push({
-      line: node.start.line
-    , message: 'expected sanity, got `eval` instead (do not use eval)'
-  })
+module.exports = no_eval
+
+no_eval.selector = 'id[name=eval]'
+
+function no_eval(node, subsource, alert) {
+  alert(
+      node
+    , 'expected sanity, got `eval` instead (do not use eval)'
+  )
 }

@@ -2,7 +2,20 @@ module.exports = check_trailing_newline
 
 var subsource = require('../utils/source')
 
-function check_trailing_newline(node, errors, warnings, source) {
+var nl_types = [
+    'variable-decl'
+  , 'if'
+  , 'for'
+  , 'for-in'
+  , 'try'
+  , 'while'
+  , 'do-while'
+  , '[type=FunctionDeclaration]'
+]
+
+check_trailing_newline.selector = ':any(' + nl_types + ') + *'
+
+function check_trailing_newline(node, subsource, alert) {
   var body = Array.isArray(node.parent.body) ? node.parent.body : (node.parent.body || {}).body
     , parent_src
     , prev
@@ -30,9 +43,9 @@ function check_trailing_newline(node, errors, warnings, source) {
     return
   }
 
-  errors.push({
-      line: node.start.line
-    , message: 'expected a single blank newline to precede'
-  })
+  alert(
+      node
+    , 'expected a single blank newline to precede'
+  )
 }
 

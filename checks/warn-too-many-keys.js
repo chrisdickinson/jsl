@@ -1,6 +1,9 @@
 module.exports = {flag: flag, check: check}
 
-function flag(node, errors, warnings) {
+flag.selector = 'variable > object > * > * > *'
+check.selector = '[type=VariableDeclaration]'
+
+function flag(node) {
   var cur = node
 
   while(cur && cur.type !== 'VariableDeclaration') {
@@ -15,11 +18,11 @@ function flag(node, errors, warnings) {
   ++cur.__obj_count__ 
 }
 
-function check(node, errors, warnings) {
+function check(node, subsource, alert) {
   if(node.declarations.length > 1 && node.__obj_count__ >= 1) {
-    errors.push({
-        line: node.start.line
-      , message: 'do not nest complex (>3 keys) objects in var declarations.'
-    })
+    alert(
+        node
+      , 'do not nest complex (>3 keys) objects in var declarations.'
+    )
   }
 }

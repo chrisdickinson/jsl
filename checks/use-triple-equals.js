@@ -1,8 +1,7 @@
 module.exports = triple_equals
 
-function triple_equals(node, errors, warnings) {
-  errors.push({
-      line: node.start.line
-    , message: 'use `===`'
-  })
+triple_equals.selector = 'binary[operator=\\=\\=]'
+
+function triple_equals(node, subsource, alert) {
+  alert(node, 'use "==="')
 }

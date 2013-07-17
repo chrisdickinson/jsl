@@ -1,6 +1,8 @@
-var subsource = require('../utils/source')
+module.exports = object_key_fmt
 
-module.exports = function(node, errors, warnings) {
+object_key_fmt.selector = 'object > *'
+
+function object_key_fmt(node, subsource, alert) {
   var sub = subsource(node)
     , src
 
@@ -11,9 +13,10 @@ module.exports = function(node, errors, warnings) {
   src = sub(node.key.range[1], node.value.range[0])
 
   if(src !== ': ') {
-    errors.push({
-        line: node.start.line
-      , message: 'expected `: `, got `'+JSON.stringify(src).slice(1, -1)+'`'
-    })
+    alert(
+        node
+      , 'expected ": ", got %r'
+      , src
+    )
   } 
 }

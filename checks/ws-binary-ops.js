@@ -1,8 +1,8 @@
 module.exports = whitespace
 
-var subsource = require('../utils/source')
+whitespace.selector = ':any(binary, assign) > * + *'
 
-function whitespace(node, errors, warnings) {
+function whitespace(node, subsource, alert) {
   var sub = subsource(node.parent)
     , src
 
@@ -24,9 +24,10 @@ function whitespace(node, errors, warnings) {
     return
   }
 
-  errors.push({
-      line: node.start.line
-    , message: 'binary operations should be surrounded ' +
-               'by a single whitespace, got ' + JSON.stringify(src)
-  })
+  alert(
+      node
+    , 'binary operations should be surrounded ' +
+      'by a single whitespace, got %r'
+    , JSON.stringify(src)
+  )
 } 

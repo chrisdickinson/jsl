@@ -1,10 +1,12 @@
 module.exports = use_preincrement
 
-function use_preincrement(node, errors, warnings) {
+use_preincrement.selector = 'for > * + * + update'
+
+function use_preincrement(node, subsource, alert) {
   if(!node.prefix) {
-    warnings.push({
-        line: node.start.line
-      , message: 'prefer `++i` style in for loop update statements'
-    })
+    alert(
+        node
+      , 'prefer `++i` style in for loop update statements'
+    )
   }
 }

@@ -1,15 +1,20 @@
 module.exports = if_return_early
 
-function if_return_early(node, errors, warnings) {
+if_return_early.selector = ''+[
+  'if[alternate] > *:first-child + block > :any(continue, break, return)'
+, 'if[alternate]:first-child:last-child'
+]
+
+function if_return_early(node, subsource, alert) {
   var current = node
 
   while(current && current.type !== 'IfStatement') {
     current = current.parent
   }
 
-  errors.push({
-      line: current.test.start.line
-    , message: 'unnecessary `else` case.'
-  })
+  alert( 
+      current.test
+    , 'unnecessary `else` case.'
+  )
 }
 
