@@ -15,9 +15,7 @@ module.exports = function(linter) {
     files = files.map(function(filename) {
       var output
 
-      if(filename === '-') {
-        output = process.stdin
-      } else {
+      if(filename !== '-') {
         filename = path.resolve(filename)
 
         if(!fs.existsSync(filename)) {
@@ -25,6 +23,8 @@ module.exports = function(linter) {
         } else {
           output = fs.createReadStream(filename)
         } 
+      } else {
+        output = process.stdin
       }
 
       output.filename = filename
@@ -38,14 +38,16 @@ module.exports = function(linter) {
       var message = []
 
       if(tally.errors) {
-        message.push(tally.errors + ' error'+(tally.errors > 1 ? 's' : ''))
+        message.push(tally.errors + ' error' + (tally.errors > 1 ? 's' : ''))
       }
 
       if(tally.warnings) {
-        message.push(tally.warnings + ' warning'+(tally.errors > 1 ? 's' : ''))
+        message.push(tally.warnings + ' warning' + 
+          (tally.errors > 1 ? 's' : ''))
       }
 
-      message = message.join(', ')+'\nchecked '+tally.files+'; '+(tally.errors ? 'NOT ' : '')+'OK\n'
+      message = message.join(', ') + '\nchecked ' + tally.files + '; ' +
+        (tally.errors ? 'NOT ' : '') + 'OK\n'
       process.stdout.write(message)
       process.exit(tally.errors)
     })
@@ -70,24 +72,28 @@ module.exports = function(linter) {
         .on('error', note_error)
         .on('data', tally) 
       .pipe(format(stream.filename))
-      .pipe(through(null, function() { 
-          consume(files, baton, ready)
-        }))
+      .pipe(through(null, onend))
       .pipe(process.stdout, {end: false})
 
     function tally(msg) {
       if(msg.type === 'error') {
         ++baton.errors
-      } else {
-        ++baton.warnings
+
+        return
       }
+
+      ++baton.warnings
+    }
+
+    function onend() {
+      consume(files, baton, ready)
     }
 
     function note_error(err) {
       ++baton.errors
       process.stderr.write(
-        stream.filename.replace(process.cwd(), '.') +
-        ' Parse Error:'+ err.stack + '\n'
+          stream.filename.replace(process.cwd(), '.') +
+          ' Parse Error:' + err.stack + '\n'
       )
       consume(files, baton, ready)
     }
@@ -104,8 +110,10 @@ module.exports = function(linter) {
 
     function write(msg) {
       return stream.queue(
-          (msg.type === 'error' ? 'E' : 'W')+' '+
-          filename.replace(process.cwd(), '.')+' L'+msg.line+': '+msg.message+'\n')
+          (msg.type === 'error' ? 'E' : 'W') + ' ' + 
+          filename.replace(process.cwd(), '.') + 
+          ' L' + msg.line + ': ' + msg.message + '\n'
+      )
     }
   }
 }
