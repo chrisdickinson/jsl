@@ -25,10 +25,12 @@ lint
   .rule(require('./checks/semicolons'), 'error')
   .rule(require('./checks/ws-unary-ops'), 'error')
   .rule(require('./checks/no-eval'), 'error')
-  .line(function(line_no, line, alert) {
-    if(line.length < 80) {
-     return
-    }
+  .line(line_length, 'error')
 
-    alert('lines should not exceed 80 characters')
-  }, 'error')
+function line_length(line_no, line, alert) {
+  if(line.length < 80) {
+    return
+  }
+
+  alert('lines should not exceed 80 characters')
+}
