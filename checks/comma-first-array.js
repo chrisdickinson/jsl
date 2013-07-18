@@ -43,20 +43,24 @@ function comma_first_array(node, subsource, alert) {
     )
 
     if(is_first) {
-      rex = new RegExp('^\\[\\s*\n\\s{'+(2 * depth + 2) +'}$')
+      rex = new RegExp('^\\[\\s*\n\\s{' + (2 * depth + 2) + '}$')
 
       if(!rex.test(str)) {
         alert(
             cur_node
-          , 'expected `[\\n'+make_tabs(depth + 1)+'    `, got `'+JSON.stringify(str).slice(1,-1)+'`'
+          , 'expected %r, got %r'
+          , '[\n' + make_tabs(depth + 1)
+          , str 
         )
       }
 
-      rex = new RegExp('^\\s*\\n\\s{'+(2 * depth) +'}, $')
+      rex = new RegExp('^\\s*\\n\\s{' + (2 * depth) + '}, $')
     } else if(!rex.test(str)) {
       alert(
           cur_node
-        , 'expected `'+JSON.stringify('\n'+tabs).slice(1, -1)+', `, got `'+JSON.stringify(str).slice(1, -1)+'`'
+        , 'expected %r, got %r'
+        , '\n' + tabs
+        , str
       )
     }
 
