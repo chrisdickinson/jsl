@@ -1,4 +1,5 @@
-var through = require('through')
+var format = require('../utils/format')
+  , through = require('through')
   , path = require('path')
   , fs = require('fs')
 
@@ -101,19 +102,5 @@ module.exports = function(linter) {
 
   function help() {
 
-  }
-
-  function format(filename) {
-    var stream = through(write)
-
-    return stream
-
-    function write(msg) {
-      return stream.queue(
-          (msg.type === 'error' ? 'E' : 'W') + ' ' + 
-          filename.replace(process.cwd(), '.') + 
-          ' L' + msg.line + ': ' + msg.message + '\n'
-      )
-    }
   }
 }
