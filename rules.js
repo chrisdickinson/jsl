@@ -8,6 +8,7 @@ lint
   .rule(require('./checks/warn-nested-objects'), 'warn')
   .rule(require('./checks/comma-first-object'), 'error')
   .rule(require('./checks/comma-first-array'), 'error')
+  .rule(require('./checks/use-single-quotes'), 'error')
   .rule(require('./checks/use-triple-equals'), 'error')
   .rule(require('./checks/comma-first-call'), 'error')
   .rule(require('./checks/trailing-newline'), 'error')
