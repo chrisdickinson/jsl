@@ -9,7 +9,7 @@ function find_tab_depth(node) {
     , isvar = language('variable')
     , object_count = 0
     , current = node
-    , depth = -1
+    , depth = 0 
     , any
 
   while(current) {

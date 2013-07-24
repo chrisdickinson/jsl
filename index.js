@@ -66,7 +66,7 @@ function linter() {
     }
 
     function parse(_filedata) {
-      filedata = '(function() {\n' + _filedata + '\n})'
+      filedata = _filedata + ''
 
       falafel(filedata, function(node) {
         node.start = to_line_col(node.range[0])
@@ -84,7 +84,7 @@ function linter() {
 
       function to_line_col(pos) {
         var column = 0
-          , line = 0 
+          , line = 1 
 
         for(var i = 0; i <= pos; ++i) {
           ++column
