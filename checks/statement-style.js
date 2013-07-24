@@ -51,13 +51,13 @@ function check_statement_style(node, subsource, alert) {
   if(node.type === 'IfStatement') {
     if(node.consequent.type !== 'BlockStatement') {
       alert(
-        node
-      , 'if statements must always use braces'
+          node
+        , 'if statements must always use braces'
       )
     } else if(node.consequent.start.line !== node.start.line) {
       alert(
-        node
-      , 'open block brace belongs on same line as statement'
+          node
+        , 'open block brace belongs on same line as statement'
       )
     }
 
@@ -67,15 +67,15 @@ function check_statement_style(node, subsource, alert) {
 
     if(node.consequent.end.line !== node.alternate.start.line) {
       alert(
-        node
-      , '`else if` should be on one line'
+          node
+        , '`else if` should be on one line'
       )
     }
 
     if(node.alternate.type !== 'BlockStatement' && node.alternate.type !== 'IfStatement') {
       alert(
-        node.alternate
-      , 'else statements must always use braces'
+          node.alternate
+        , 'else statements must always use braces'
       )
     }
 
@@ -87,14 +87,14 @@ function check_statement_style(node, subsource, alert) {
   if(body.type !== 'BlockStatement') {
     if(node.type !== 'ForInStatement' && body.type !== 'IfStatement') {
       alert(
-        node
-      , type+' statements must always use braces'
+          node
+        , type+' statements must always use braces'
       )
     }
   } else if(body.start.line !== node.start.line) {
     alert(
-      node
-    , 'open block brace belongs on same line as statement'
+        node
+      , 'open block brace belongs on same line as statement'
     )
   }
 
