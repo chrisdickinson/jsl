@@ -7,7 +7,7 @@ function whitespace(node, subsource, alert) {
     , op = node.parent.operator
     , src
 
-  if(op === 'typeof' || op === 'void') {
+  if(op === 'typeof' || op === 'void' || op === 'delete') {
     op += ' '  
   }
 
