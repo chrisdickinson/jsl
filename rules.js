@@ -16,6 +16,7 @@ lint
   .rule(require('./checks/warn-too-many-keys').check, 'warn')
   .rule(require('./checks/warn-too-many-keys').flag, 'warn')
   .rule(require('./checks/object-key-format'), 'error')
+  .rule(require('./checks/computed-lookup'), 'error')
   .rule(require('./checks/statement-style'), 'error')
   .rule(require('./checks/var-block-order'), 'error')
   .rule(require('./checks/if-return-early'), 'error')
