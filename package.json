@@ -29,6 +29,6 @@
     "concat-stream": "~1.0.0",
     "through": "~2.3.4",
     "cssauron": "~0.2.0",
-    "module-deps": "~1.0.1"
+    "scoped": "~1.1.2"
   }
 }

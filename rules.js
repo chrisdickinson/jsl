@@ -22,9 +22,10 @@ lint
   .rule(require('./checks/function-style'), 'error')
   .rule(require('./checks/if-stmt-order'), 'error')
   .rule(require('./checks/ws-binary-ops'), 'error')
+  .rule(require('./checks/ws-unary-ops'), 'error')
   .rule(require('./checks/block-format'), 'error')
   .rule(require('./checks/semicolons'), 'error')
-  .rule(require('./checks/ws-unary-ops'), 'error')
+  .rule(require('./checks/no-globals'), 'error')
   .rule(require('./checks/no-eval'), 'error')
   .line(line_length, 'error')
 
