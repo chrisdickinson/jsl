@@ -20,7 +20,7 @@ function function_style(node, subsource, alert) {
         alert(
             child
           , 'saw %r multiple times!'
-          , child.name 
+          , child.name
         )
       }
 

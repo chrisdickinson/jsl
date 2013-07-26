@@ -16,7 +16,7 @@ function if_stmt_order(node, subsource, alert) {
     if(chk(node)) {
       return alert(
           test
-        , 'decrease nesting by reversing this `if` statement and ' + 
+        , 'decrease nesting by reversing this `if` statement and ' +
           'returning early from the consequent.'
       )
     }

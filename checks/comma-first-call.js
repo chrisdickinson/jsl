@@ -28,13 +28,13 @@ function comma_first_call(node, subsource, alert) {
     }
 
     return
-  } 
+  }
 
   // this is the easy case, but it misses .pipe, for example:
   //   stdin
   //     .pipe(xxx)
   //     .pipe(yyy)
-  var end_line = node.arguments[node.arguments.length - 1].start.line 
+  var end_line = node.arguments[node.arguments.length - 1].start.line
     , start_line = node.callee.end.line
 
   if(end_line === start_line) {
@@ -78,5 +78,5 @@ function comma_first_call(node, subsource, alert) {
 
     last_node = cur_node
     is_first = false
-  } 
+  }
 }

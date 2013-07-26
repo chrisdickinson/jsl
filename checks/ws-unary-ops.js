@@ -8,7 +8,7 @@ function whitespace(node, subsource, alert) {
     , src
 
   if(op === 'typeof' || op === 'void' || op === 'delete') {
-    op += ' '  
+    op += ' '
   }
 
   src = sub(node.parent.range[0], node.range[0])
@@ -31,8 +31,8 @@ function whitespace(node, subsource, alert) {
 
   alert(
       node
-    , 'expected %r, got %r' 
+    , 'expected %r, got %r'
     , op
     , src
   )
-} 
+}

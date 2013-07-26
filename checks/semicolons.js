@@ -15,7 +15,7 @@ function check_for_no_semicolons(node, subsource, alert) {
   }
 
   alert(
-    node
-  , 'semicolons are not allowed'
-  ) 
+      node
+    , 'semicolons are not allowed'
+  )
 }

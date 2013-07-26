@@ -21,7 +21,7 @@ function comma_first_object(node, subsource, alert) {
     }
 
     return
-  } 
+  }
 
   if(nodes[nodes.length - 1].start.line === node.start.line) {
     return
@@ -66,5 +66,5 @@ function comma_first_object(node, subsource, alert) {
 
     last_node = cur_node
     is_first = false
-  } 
+  }
 }

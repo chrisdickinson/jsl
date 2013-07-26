@@ -10,13 +10,13 @@ no_explicit_globals.selector = '*'
 
 function no_explicit_globals(node, subsource, alert) {
   last_alert = alert
-  instance(node)  
+  instance(node)
 }
 
 function ready(scope) {
   var node
     , use
-    
+
   for(var i = 0, len = scope.uses.length; i < len; ++i) {
     use = scope.uses[i]
 
@@ -26,7 +26,7 @@ function ready(scope) {
 
       if(node.kind !== 'explicit') {
         continue
-      } 
+      }
 
       last_alert(
           node.node

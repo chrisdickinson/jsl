@@ -29,7 +29,10 @@ function var_block_order(node, subsource, alert) {
       assign = false
       length = Infinity
     } else if(decl[i].init && !assign) {
-      alert(decl[i], 'should not transition from no-assign to assign in var block')
+      alert(
+          decl[i]
+        , 'should not transition from no-assign to assign in var block'
+      )
     }
 
     line_len = Math.max.apply(null, decl[i].src.split('\n').map(function(x) {
@@ -39,11 +42,13 @@ function var_block_order(node, subsource, alert) {
     if(line_len > length) {
       alert(
           decl[i]
-        , 'variable declarations should be in order of assign, no assign; then line length'
+        , 'variable declarations should be ' +
+          'in order of assign, no assign; ' +
+          'then line length'
       )
     }
 
     length = line_len
-  } 
+  }
 }
 

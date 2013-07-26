@@ -16,10 +16,14 @@ var nl_types = [
 check_trailing_newline.selector = ':any(' + nl_types + ') + *'
 
 function check_trailing_newline(node, subsource, alert) {
-  var body = Array.isArray(node.parent.body) ? node.parent.body : (node.parent.body || {}).body
-    , parent_src
+  var parent_src
     , prev
+    , body
     , idx
+
+  body = !Array.isArray(node.parent.body) ?
+    (node.parent.body || {}).body :
+    node.parent.body
 
   if(!body) {
     return

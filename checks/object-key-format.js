@@ -18,5 +18,5 @@ function object_key_fmt(node, subsource, alert) {
       , 'expected ": ", got %r'
       , src
     )
-  } 
+  }
 }

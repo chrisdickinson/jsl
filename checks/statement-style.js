@@ -10,7 +10,10 @@ var stmt_types = [
   , 'try'
 ]
 
-check_statement_style.selector = ''+stmt_types
+var lang = require('cssauron-falafel')
+  , block_if = lang('block, if')
+
+check_statement_style.selector = '' + stmt_types
 
 function check_statement_style(node, subsource, alert) {
   var first_node = node.init || node.param || node.test
@@ -25,24 +28,31 @@ function check_statement_style(node, subsource, alert) {
   type = type.replace('dowhile', 'while')
 
   if(first_node) {
-    ch = src.slice(first_node.range[0] - node.range[0] - 2, first_node.range[0] - node.range[0])
+    ch = src.slice(
+        first_node.range[0] - node.range[0] - 2
+      , first_node.range[0] - node.range[0]
+    )
 
     if(/\s/.test(ch)) {
       alert(
           node
-        , /\s/.test(ch[1]) ? 
+        , /\s/.test(ch[1]) ?
             'no space between `(` and expression' :
-            'no space between `'+type+'` and `(`'
+            'no space between `' + type + '` and `(`'
       )
     }
 
     if(last_node && node.type !== 'DoWhileStatement') {
-      ch = src.slice(last_node.range[1] - node.range[0], last_node.range[1] - node.range[0] + 3)
+      ch = src.slice(
+          last_node.range[1] - node.range[0]
+        , last_node.range[1] - node.range[0] + 3
+      )
 
       if(!/^\)\s{1}\{$/.test(ch)) {
         alert(
             node
-          , '`'+JSON.stringify(ch).slice(1, -1)+'` should match `) {`'
+          , '%r should match ") {"'
+          , ch
         )
       }
     }
@@ -72,7 +82,7 @@ function check_statement_style(node, subsource, alert) {
       )
     }
 
-    if(node.alternate.type !== 'BlockStatement' && node.alternate.type !== 'IfStatement') {
+    if(!block_if(node.alternate)) {
       alert(
           node.alternate
         , 'else statements must always use braces'
@@ -88,7 +98,7 @@ function check_statement_style(node, subsource, alert) {
     if(node.type !== 'ForInStatement' && body.type !== 'IfStatement') {
       alert(
           node
-        , type+' statements must always use braces'
+        , type + ' statements must always use braces'
       )
     }
   } else if(body.start.line !== node.start.line) {
@@ -100,8 +110,12 @@ function check_statement_style(node, subsource, alert) {
 
   if(node.type === 'TryStatement') {
     for(var i = 0, len = node.handlers.length; i < len; ++i) {
+      var sample = src.slice(
+          node.handlers[i].range[0] - node.range[0] - '} '.length
+        , node.handlers[i].range[0] - node.range[0]
+      )
 
-      if(src.slice(node.handlers[i].range[0] - node.range[0] - '} '.length, node.handlers[i].range[0] - node.range[0]) !== '} ') {
+      if(sample !== '} ') {
         alert(
             node.handlers[i]
           , '`catch` should be on the same line as `}`'
@@ -113,9 +127,16 @@ function check_statement_style(node, subsource, alert) {
       return
     }
 
-    var lhs = node.handlers.length ? node.handlers[node.handlers.length - 1] : body
-    
-    if(src.slice(lhs.range[1] - node.range[0], node.finalizer.range[0] - node.range[0]) === ' finally ') {
+    var sample
+      , lhs
+
+    lhs = node.handlers.length ? node.handlers[node.handlers.length - 1] : body
+    sample = src.slice(
+        lhs.range[1] - node.range[0]
+      , node.finalizer.range[0] - node.range[0]
+    )
+
+    if(sample === ' finally ') {
       return
     }
 

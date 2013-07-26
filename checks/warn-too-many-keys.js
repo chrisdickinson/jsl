@@ -15,7 +15,7 @@ function flag(node) {
   }
 
   cur.__obj_count__ = (cur.__obj_count__ || 0)
-  ++cur.__obj_count__ 
+  ++cur.__obj_count__
 }
 
 function check(node, subsource, alert) {

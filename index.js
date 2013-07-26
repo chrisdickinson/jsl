@@ -36,7 +36,7 @@ function linter() {
   stream_factory.cli = require('./as/cli')(stream_factory)
 
   return stream_factory
-  
+
   function stream_factory() {
     var stream = through(write, end)
       , cat = concat(safely(parse))
@@ -61,7 +61,7 @@ function linter() {
             line_number
           , line
           , line_rules[i].make_error(output, line_number)
-        ) 
+        )
       }
     }
 
@@ -84,7 +84,7 @@ function linter() {
 
       function to_line_col(pos) {
         var column = 0
-          , line = 1 
+          , line = 1
 
         for(var i = 0; i <= pos; ++i) {
           ++column
@@ -150,7 +150,7 @@ function linter() {
 
     if(typeof selector !== 'function') {
       throw new Error(
-          'selector for ' + (exec.name || '<anonymous>') + 
+          'selector for ' + (exec.name || '<anonymous>') +
           ' must be a function:' + selector
       )
     }
@@ -179,18 +179,18 @@ function linter() {
               , replace([].slice.call(arguments, 2))
             )
         })
-      } 
+      }
     }
   }
-    
+
   function add_line_rule(check, level) {
     if(types.indexOf(level) === -1) {
       types.push(level)
     }
 
     line_rules.push({
-        exec: check 
-      , make_error: make_error      
+        exec: check
+      , make_error: make_error
     })
 
     return this
@@ -207,7 +207,7 @@ function linter() {
               , replace([].slice.call(arguments, 2))
             )
         })
-      } 
+      }
     }
   }
 }

@@ -30,4 +30,4 @@ function whitespace(node, subsource, alert) {
       'by a single whitespace, got %r'
     , JSON.stringify(src)
   )
-} 
+}

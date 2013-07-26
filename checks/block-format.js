@@ -16,7 +16,7 @@ function block_format(node, subsource, alert) {
 
   result = slice(node.range[0], node.range[0] + src.indexOf('\n'))
 
-  if(!/^\{\s*$/.test(result)) { 
+  if(!/^\{\s*$/.test(result)) {
     alert(
         node
       , 'expected `\\n` after `{`'
@@ -56,12 +56,12 @@ function block_format(node, subsource, alert) {
 
   while(result.length && result.shift() !== '}') {
     // noop
-  } 
+  }
 
   cnt = 0
 
   while(result.length && result.shift() !== '\n') {
-    ++cnt  
+    ++cnt
   }
 
   if(!result.length || cnt !== (depth - 1) << 1) {
