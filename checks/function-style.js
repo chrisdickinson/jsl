@@ -4,29 +4,31 @@ function_style.selector = 'function'
 
 function function_style(node, subsource, alert) {
   var slice = subsource(node)
-    , ident = node.id
     , string = 'function'
+    , ident = node.id
     , varnames = {}
     , result
     , valid
 
   if(ident) {
-    string += ' '+node.id.name
+    string += ' ' + node.id.name
   }
 
-  string += '('+node.params.map(function(child) {
+  string += '(' + node.params.map(function(child) {
     if(child.type === 'Identifier') {
       if(varnames[child.name]) {
         alert(
-          child
-        , 'saw %r multiple times!'
-        , child.name 
+            child
+          , 'saw %r multiple times!'
+          , child.name 
         )
       }
+
       varnames[child.name] = true
     }
+
     return child.src
-  }).join(', ')+')'
+  }).join(', ') + ')'
 
   result = slice(node.range[0], node.range[0] + string.length)
   valid = result === string

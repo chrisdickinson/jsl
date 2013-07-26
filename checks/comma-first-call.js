@@ -34,7 +34,10 @@ function comma_first_call(node, subsource, alert) {
   //   stdin
   //     .pipe(xxx)
   //     .pipe(yyy)
-  if(node.arguments[node.arguments.length - 1].start.line === node.callee.end.line) {
+  var end_line = node.arguments[node.arguments.length - 1].start.line 
+    , start_line = node.callee.end.line
+
+  if(end_line === start_line) {
     return
   }
 
@@ -52,7 +55,7 @@ function comma_first_call(node, subsource, alert) {
     )
 
     if(is_first) {
-      rex = new RegExp('^\\(\\s*\n\\s{'+(2 * depth + 4) +'}$')
+      rex = new RegExp('^\\(\\s*\n\\s{' + (2 * depth + 4) + '}$')
 
       if(!rex.test(str)) {
         alert(
@@ -63,7 +66,7 @@ function comma_first_call(node, subsource, alert) {
         )
       }
 
-      rex = new RegExp('^\\s*\\n\\s{'+(2 * depth + 2) +'}, $')
+      rex = new RegExp('^\\s*\\n\\s{' + (2 * depth + 2) + '}, $')
     } else if(!rex.test(str)) {
       alert(
           cur_node
