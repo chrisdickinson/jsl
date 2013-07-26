@@ -114,6 +114,20 @@ Run the linter as a CLI. The CLI will accept any number of files, run the linter
 them, and output messages. If rules with a level of `"error"` emit messages, the
 CLI will exit with a non-zero exit code.
 
+
+### Linter.test(fileList[, readyCallback]) -> Function
+
+Given an array of entry points, create a function that takes `assert` and runs
+the linter against your repository.
+
+```javascript
+var test = require('tape')
+  , your_rules = require('your-rules')
+
+test('repository lints', your_rules.test([__filename])) 
+
+```
+
 ### Linter.transform()
 
 **TODO**
