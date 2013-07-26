@@ -28,6 +28,15 @@ lint
   .rule(require('./checks/no-globals'), 'error')
   .rule(require('./checks/no-eval'), 'error')
   .line(line_length, 'error')
+  .line(trailing, 'warning')
+
+function trailing(line_no, line, alert) {
+  if(!/\s+$/.test(line)) {
+    return
+  }
+
+  alert('trailing whitespace')
+}
 
 function line_length(line_no, line, alert) {
   if(line.length < 80) {
