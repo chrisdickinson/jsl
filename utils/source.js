@@ -3,12 +3,14 @@ module.exports = function(node) {
 
   return function(from, to) {
     var bits = src.slice(from - node.range[0], to - node.range[0]).split('')
+      , chars_on_line = false
       , last = null
       , out = []
       , ch
 
     while(bits.length) {
       ch = bits.shift()
+
       if(ch === '/' && last === '/') {
         out.pop()
 
@@ -17,7 +19,9 @@ module.exports = function(node) {
         }
 
         last = null
-        ch = bits.shift() || ''
+
+        ch = chars_on_line ? '\n' : (bits.shift() || '')
+        chars_on_line = false
       } else if(ch === '*' && last === '/') {
         out.pop()
 
@@ -28,6 +32,10 @@ module.exports = function(node) {
         bits.shift()
         last = null
         ch = bits.shift() || ''
+      } else if(ch === '\n') {
+        chars_on_line = false
+      } else if(!chars_on_line && !/\s/.test(last || '')) {
+        chars_on_line = true
       }
 
       out.push(ch)
