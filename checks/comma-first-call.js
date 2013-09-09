@@ -41,6 +41,24 @@ function comma_first_call(node, subsource, alert) {
     return
   }
 
+  // is continuous call?
+  var last = node.callee.start.line
+    , is_continuous = true
+
+  for(var i = 0, len = node.arguments.length; i < len; ++i) {
+    is_continuous = last === node.arguments[i].start.line
+
+    if(!is_continuous) {
+      break
+    }
+
+    last = node.arguments[i].end.line
+  }
+
+  if(is_continuous) {
+    return
+  }
+
   var depth = find_tab_depth(node)
     , tabs = make_tabs(depth)
     , is_first = true
@@ -48,26 +66,15 @@ function comma_first_call(node, subsource, alert) {
 
   last_node = node.callee
 
+  rex = new RegExp('^\\(\\s*\n\\s{' + (2 * depth + 4) + '}$')
+
   while(cur_node = nodes.shift()) {
     str = sub(
         last_node.range[1]
       , cur_node.range[0]
     )
 
-    if(is_first) {
-      rex = new RegExp('^\\(\\s*\n\\s{' + (2 * depth + 4) + '}$')
-
-      if(!rex.test(str)) {
-        alert(
-            cur_node
-          , 'expected %r, got %r'
-          , tabs
-          , str
-        )
-      }
-
-      rex = new RegExp('^\\s*\\n\\s{' + (2 * depth + 2) + '}, $')
-    } else if(!rex.test(str)) {
+    if(!rex.test(str)) {
       alert(
           cur_node
         , 'expected %r, got %r'
@@ -76,7 +83,7 @@ function comma_first_call(node, subsource, alert) {
       )
     }
 
+    rex = new RegExp('^\\s*\\n\\s{' + (2 * depth + 2) + '}, $')
     last_node = cur_node
-    is_first = false
   }
 }

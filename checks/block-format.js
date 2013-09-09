@@ -1,17 +1,22 @@
 module.exports = block_format
 
 var find_depth = require('../utils/find-tab-depth')
+  , parents = require('../utils/parents')
 
 block_format.selector = 'block'
 
 function block_format(node, subsource, alert) {
-  var slice = subsource(node)
+  var root = parents(node, ':root')[0]
+    , rslice = subsource(root)
+    , slice = subsource(node)
     , result
     , depth
+    , rsrc
     , stmt
     , cnt
     , src
 
+  rsrc = rslice(root.range[0], node.range[0])
   src = node.src || node.source()
 
   result = slice(node.range[0], node.range[0] + src.indexOf('\n'))
@@ -30,7 +35,22 @@ function block_format(node, subsource, alert) {
     )
   }
 
-  depth = find_depth(node)
+  var curs = rsrc.length
+    , mark = curs
+    , low
+
+  while(curs > -1 && rsrc[curs] !== '\n') {
+    --curs
+  }
+
+  low = curs + 1
+  ++curs
+
+  while(curs < mark && /\s/.test(rsrc[curs])) {
+    ++curs
+  }
+
+  depth = ((curs - low) >> 1) + 1
 
   for(var i = 0, len = node.body.length; i < len; ++i) {
     stmt = node.body[i]
