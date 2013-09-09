@@ -1,6 +1,6 @@
 {
   "name": "jsl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "a modular js linter",
   "main": "index.js",
   "scripts": {
