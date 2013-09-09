@@ -46,7 +46,7 @@ function block_format(node, subsource, alert) {
   low = curs + 1
   ++curs
 
-  while(curs < mark && /\s/.test(rsrc[curs])) {
+  while(curs < mark && /[,\s]/.test(rsrc[curs])) {
     ++curs
   }
 
