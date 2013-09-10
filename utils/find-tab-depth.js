@@ -43,6 +43,7 @@ function find_tab_depth(node) {
 
     if(isvar(current) && current.parent.declarations.length > 1) {
       ++depth
+      ++depth
     }
     current = current.parent
   }
