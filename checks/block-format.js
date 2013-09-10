@@ -74,6 +74,8 @@ function block_format(node, subsource, alert) {
   result = slice(stmt.range[0], node.range[1])
   result = result.split('').reverse()
 
+  var original = result.slice()
+
   while(result.length && result.shift() !== '}') {
     // noop
   }
@@ -91,7 +93,8 @@ function block_format(node, subsource, alert) {
 
     alert(
         node
-      , 'expected proper `}` dedent'
+      , 'expected proper `}` dedent, got %r'
+      , original.reverse().join('')
     )
   }
 }

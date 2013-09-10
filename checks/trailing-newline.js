@@ -37,13 +37,20 @@ function check_trailing_newline(node, subsource, alert) {
 
   idx -= 1
   prev = body[idx]
-  parent_src = subsource(node.parent)(prev.range[1], node.range[0])
+  parent_src = subsource(node.parent)(prev.range[0], node.range[0])
 
-  if(/\n\s*\n\s*$/g.test(prev.src)) {
-    return
+  var idx = parent_src.length - 1
+    , left = 2
+
+  while(idx > -1 && /[\n\s]/.test(parent_src[idx])) {
+    if(parent_src[idx] === '\n') {
+      --left
+    }
+
+    --idx
   }
 
-  if(parent_src.replace(/[^\n]/g, '').length === 2) {
+  if(left === 0) {
     return
   }
 
