@@ -2,7 +2,7 @@ module.exports = if_return_early
 
 if_return_early.selector = '' + [
     'if[alternate] > *:first-child + block > :any(continue, break, return)'
-  , 'if[alternate]:first-child:last-child'
+  , 'if[alternate]:first-child:last-child:not(.alternate)'
 ]
 
 function if_return_early(node, subsource, alert) {
@@ -17,4 +17,3 @@ function if_return_early(node, subsource, alert) {
     , 'unnecessary `else` case.'
   )
 }
-
