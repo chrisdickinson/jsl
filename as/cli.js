@@ -3,7 +3,9 @@ var format = require('../utils/format')
   , path = require('path')
   , fs = require('fs')
 
-module.exports = function(linter) {
+module.exports = function(linter, exit) {
+  exit = exit || process.exit.bind(process)
+
   return cli
 
   function cli() {
@@ -50,7 +52,7 @@ module.exports = function(linter) {
       message = message.join(', ') + '\nchecked ' + tally.files + '; ' +
         (tally.errors ? 'NOT ' : '') + 'OK\n'
       process.stdout.write(message)
-      process.exit(tally.errors)
+      exit(tally.errors)
     })
   }
 

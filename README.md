@@ -108,11 +108,12 @@ and emits messages:
 }
 ```
 
-### Linter.cli()
+### Linter.cli(exit=process.exit)
 
 Run the linter as a CLI. The CLI will accept any number of files, run the linter on
 them, and output messages. If rules with a level of `"error"` emit messages, the
-CLI will exit with a non-zero exit code.
+CLI will exit with a non-zero exit code. It can be provided an optional exit function;
+if none is provided it will call `process.exit` with the number of error-level violations.
 
 
 ### Linter.test(fileList[, readyCallback]) -> Function
